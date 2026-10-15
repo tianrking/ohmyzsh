@@ -1,0 +1,17 @@
+name: Nounset review validation
+on:
+  push:
+    branches: [validation/nounset-review]
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
+      - run: sudo apt-get update && sudo apt-get install -y zsh
+      - run: |
+          zsh -df lib/tests/nounset.test.zsh
+          zsh -df lib/tests/cli.test.zsh
+          zsh -n oh-my-zsh.sh lib/git.zsh lib/history.zsh
+          git diff --check
